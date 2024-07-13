@@ -1,0 +1,68 @@
+﻿<Window
+    x:Class="BioEntry_App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BioEntry_App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="MainWindow"
+    Width="600"
+    Height="300"
+    ResizeMode="NoResize"
+    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="0"
+            CornerRadius="20"
+            GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+            <LinearGradientBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform CenterX="0.5" CenterY="0.5" />
+                    <SkewTransform CenterX="0.5" CenterY="0.5" />
+                    <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </LinearGradientBrush.RelativeTransform>
+            <GradientStop Color="#FFE7E9BB" />
+            <GradientStop Offset="1" Color="#FF403B4A" />
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid Loaded="PageLoaded">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Arial"
+            FontSize="50"
+            FontWeight="Bold"
+            Foreground="#FFE7E9BB">
+            BioEntry
+        </TextBlock>
+        <ui:ProgressRing
+            Grid.Row="2"
+            Grid.Column="1"
+            EngAngle="200"
+            Foreground="#FFE7E9BB"
+            IsIndeterminate="True" />
+
+    </Grid>
+</Window>
