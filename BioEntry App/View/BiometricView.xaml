@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="MainWindow"
-    Width="600"
-    Height="300"
+    Width="1200"
+    Height="800"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <WindowChrome.WindowChrome>
@@ -17,5 +17,56 @@
             CornerRadius="20"
             GlassFrameThickness="0" />
     </WindowChrome.WindowChrome>
-    <Grid />
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+            <LinearGradientBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform CenterX="0.5" CenterY="0.5" />
+                    <SkewTransform CenterX="0.5" CenterY="0.5" />
+                    <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </LinearGradientBrush.RelativeTransform>
+            <GradientStop Color="#FFE7E9BB" />
+            <GradientStop Offset="1" Color="#FF403B4A" />
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="8*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="5*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.Background>
+                <SolidColorBrush Opacity="0.1" Color="White" />
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.001*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <WrapPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                Background="White" />
+            <ui:TextBlock
+                Grid.ColumnSpan="3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontTypography="Title"
+                Foreground="White">
+                Registration with fingerprint or face recognition
+            </ui:TextBlock>
+        </Grid>
+    </Grid>
 </Window>
