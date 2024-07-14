@@ -15,18 +15,13 @@ using System.Windows.Shapes;
 namespace BioEntry_App.View
 {
     /// <summary>
-    /// Interaction logic for BiometricView.xaml
+    /// Interaction logic for FingerprintView.xaml
     /// </summary>
-    public partial class BiometricView : Window
+    public partial class FingerprintView : Window
     {
-        public BiometricView()
+        public FingerprintView()
         {
             InitializeComponent();
-        }
-
-        private void CloseBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }

@@ -32,6 +32,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="8*" />
@@ -42,6 +43,16 @@
             <RowDefinition Height="5*" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <ui:Button
+            Name="CloseBtn"
+            Grid.Column="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Appearance="Transparent"
+            Click="CloseBtn_Click"
+            FontFamily="Arial">
+            X
+        </ui:Button>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.Background>
                 <SolidColorBrush Opacity="0.1" Color="White" />
@@ -67,6 +78,94 @@
                 Foreground="White">
                 Registration with fingerprint or face recognition
             </ui:TextBlock>
+            <!--  Face ID Card  -->
+            <Grid Grid.Row="1" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <ui:SymbolIcon
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="120"
+                    Foreground="White"
+                    Symbol="ScanCamera20" />
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontTypography="TitleLarge"
+                    Foreground="White">
+                    Log in With Face ID
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontTypography="Subtitle"
+                    Foreground="White"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    if you want to log in with face id select this option
+                </ui:TextBlock>
+                <ui:Button
+                    Grid.Row="3"
+                    Width="250"
+                    Height="50"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    Select
+                </ui:Button>
+
+            </Grid>
+            <!--  Finger ID Card  -->
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <ui:SymbolIcon
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="120"
+                    Foreground="White"
+                    Symbol="Fingerprint20" />
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontTypography="TitleLarge"
+                    Foreground="White">
+                    Log in With Finger ID
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontTypography="Subtitle"
+                    Foreground="White"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    if you want to log in with finger id select this option
+                </ui:TextBlock>
+                <ui:Button
+                    Grid.Row="3"
+                    Width="250"
+                    Height="50"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    Select
+                </ui:Button>
+
+            </Grid>
         </Grid>
     </Grid>
 </Window>

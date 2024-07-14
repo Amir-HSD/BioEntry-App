@@ -65,6 +65,9 @@
     <Compile Include="View\BiometricView.xaml.cs">
       <DependentUpon>BiometricView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\FingerprintView.xaml.cs">
+      <DependentUpon>FingerprintView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +81,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\BiometricView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FingerprintView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
