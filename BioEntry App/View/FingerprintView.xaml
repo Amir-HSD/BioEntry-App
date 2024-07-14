@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gif="http://wpfanimatedgif.codeplex.com"
     xmlns:local="clr-namespace:BioEntry_App.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -43,6 +44,16 @@
             <RowDefinition Height="5*" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <ui:Button
+            Name="CancelBtn"
+            Grid.Column="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Appearance="Transparent"
+            Click="CancelBtn_Click"
+            FontFamily="Arial">
+            Cancel
+        </ui:Button>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.Background>
                 <SolidColorBrush Opacity="0.1" Color="White" />
@@ -59,6 +70,43 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <Image
+                    Grid.Row="1"
+                    gif:ImageBehavior.AnimatedSource="/Content/Gif/finger.gif"
+                    gif:ImageBehavior.AnimationSpeedRatio="1.5" />
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontTypography="TitleLarge"
+                    Foreground="White">
+                    Log in With Finger ID
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontTypography="Subtitle"
+                    Foreground="White"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    Please place your finger on the device
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Grid.Row="3"
+                    Margin="0,40,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontTypography="Subtitle"
+                    Foreground="White"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    Scaning
+                </ui:TextBlock>
+                <ProgressBar
+                    Grid.Row="3"
+                    Foreground="White"
+                    IsIndeterminate="True" />
             </Grid>
         </Grid>
     </Grid>

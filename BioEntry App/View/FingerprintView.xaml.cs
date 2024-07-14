@@ -23,5 +23,10 @@ namespace BioEntry_App.View
         {
             InitializeComponent();
         }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

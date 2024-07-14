@@ -157,11 +157,13 @@
                     if you want to log in with finger id select this option
                 </ui:TextBlock>
                 <ui:Button
+                    Name="FingerprintBtn"
                     Grid.Row="3"
                     Width="250"
                     Height="50"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center"
+                    Click="FingerprintBtn_Click">
                     Select
                 </ui:Button>
 
