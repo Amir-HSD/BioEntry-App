@@ -52,5 +52,28 @@ namespace BioEntry_App.View
             }
             
         }
+
+        private void FaceRecognitionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            FaceRecognitionView frw = new FaceRecognitionView();
+            bool? check = frw.ShowDialog();
+            if (check != null && check != true)
+            {
+                this.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                if (Application.Current.MainWindow.IsActive)
+                {
+                    this.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MessageBox.Show("Error To Load MainWindow");
+                    App.Current.Shutdown();
+                }
+            }
+        }
     }
 }

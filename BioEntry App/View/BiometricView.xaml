@@ -113,11 +113,12 @@
                     if you want to log in with face id select this option
                 </ui:TextBlock>
                 <ui:Button
+                    Name="FaceRecognitionBtn"
                     Grid.Row="3"
                     Width="250"
                     Height="50"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Click="FaceRecognitionBtn_Click">
                     Select
                 </ui:Button>
 

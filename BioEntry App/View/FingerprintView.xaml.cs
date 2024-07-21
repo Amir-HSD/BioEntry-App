@@ -1,5 +1,7 @@
-﻿using System;
+﻿using BioEntry_App.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +21,27 @@ namespace BioEntry_App.View
     /// </summary>
     public partial class FingerprintView : Window
     {
+        FingerPrintViewModel viewModel;
         public FingerprintView()
         {
+            viewModel = new FingerPrintViewModel(this);
+            this.DataContext = viewModel;
             InitializeComponent();
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void FingerPrintWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            viewModel.ScanFinger();
+        }
+
+        private void FingerPrintWindow_Closed(object sender, EventArgs e)
+        {
+            viewModel.OpenCloseSerialPort();
         }
     }
 }
