@@ -1,26 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 using System.Windows.Threading;
 using Newtonsoft.Json;
 using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.IO;
 using Emgu.CV.Face;
+using System.Net;
+using System.Collections.Generic;
 
 namespace BioEntry_App.View
 {
@@ -32,11 +21,16 @@ namespace BioEntry_App.View
         private VideoCapture _capture;
         private CascadeClassifier _faceCascade;
         private bool _captureInProgress;
+        //private readonly LBPHFaceRecognizer _faceRecognizer;
+        private HttpClient _httpClient;
         public FaceRecognitionView()
         {
             InitializeComponent();
+            _httpClient = new HttpClient();
+            
             //_faceCascade = new CascadeClassifier(@"C:\\Users\\Lion\\source\\repos\\BioEntry App\\BioEntry App\\haarcascade_frontalface_default.xml");
             _faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+            //_faceRecognizer = new LBPHFaceRecognizer(1, 8, 8, 8, 100);
         }
 
         private void Capture()
@@ -85,6 +79,7 @@ namespace BioEntry_App.View
                 foreach (var face in faces)
                 {
                     image.Draw(face, new Bgr(0, 255, 0), 2);
+                    
                     SendFaceToAPI(gray.Copy(face));
                 }
 
@@ -111,35 +106,49 @@ namespace BioEntry_App.View
         }
         private async void SendFaceToAPI(Image<Gray, byte> faceImage)
         {
-            // تبدیل تصویر چهره به بایت
+            Capture();
             byte[] faceBytes = faceImage.ToJpegData();
 
-            // آماده‌سازی داده‌ها برای ارسال به API
             var data = new
             {
-                FaceData = Convert.ToBase64String(faceBytes)
+                Img = Convert.ToBase64String(faceBytes)
             };
 
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            Capture();
-            // ارسال درخواست به API
-            using (var client = new HttpClient())
+            // Check Method For Recognition This Settings Temorary After Compelete Admin Page This Setting will change to check automaticlly
+            string FRMethod = "WithApi"; // WithApp
+            if (FRMethod == "WithApi")
             {
+                _httpClient.BaseAddress = new Uri("http://localhost:63001/api/FaceRecognition/");
+                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(_httpClient.BaseAddress, content);
+                if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
+                {
+                    var Response = JsonConvert.DeserializeObject<Dictionary<object, object>>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+                    Response.TryGetValue("status", out var status);
+                    if (status != null)
+                    {
+                        if (status.ToString().Contains("successfully"))
+                        {
 
-
-
-                //var response = await client.PostAsync("https://your-api-url.com/validate-face", content);
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    var result = await response.Content.ReadAsStringAsync();
-                //    // پردازش نتیجه احراز هویت
-                //}
-                //else
-                //{
-                //    // پردازش خطا
-                //}
+                        }
+                        else
+                        {
+                            Capture();
+                        }
+                    }
+                }
+                else
+                {
+                    Capture();
+                }
+            } else if (FRMethod == "WithApp")
+            {
+                _httpClient.BaseAddress = new Uri("http://localhost:63001/api/FaceRecognition/");
+                HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(_httpClient.BaseAddress);
+                var Response = JsonConvert.DeserializeObject<Dictionary<object, object>>(httpResponseMessage.Content.ReadAsStringAsync().Result);
             }
+            
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]

@@ -76,7 +76,9 @@
     </ApplicationDefinition>
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="Model\Face.cs" />
     <Compile Include="Services\ApiService.cs" />
+    <Compile Include="Services\FaceRecognition.cs" />
     <Compile Include="ViewModel\FingerPrintViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\BiometricView.xaml.cs">
