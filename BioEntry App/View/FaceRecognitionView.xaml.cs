@@ -10,27 +10,50 @@ using System.Net.Http;
 using Emgu.CV.Face;
 using System.Net;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using BioEntry_App.Model;
+using BioEntry_App.Services;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace BioEntry_App.View
 {
     /// <summary>
     /// Interaction logic for FaceRecognitionView.xaml
     /// </summary>
-    public partial class FaceRecognitionView : Window
+    public partial class FaceRecognitionView : Window, INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private VideoCapture _capture;
         private CascadeClassifier _faceCascade;
         private bool _captureInProgress;
-        //private readonly LBPHFaceRecognizer _faceRecognizer;
         private HttpClient _httpClient;
+
+        // property
+        public int Attempts { get; set; }
+        private string status;
+
+        public string Status
+        {
+            get { return status; }
+            set { status = value; OnPropertyChanged(); }
+        }
+
+
         public FaceRecognitionView()
         {
             InitializeComponent();
+            DataContext = this;
             _httpClient = new HttpClient();
-            
-            //_faceCascade = new CascadeClassifier(@"C:\\Users\\Lion\\source\\repos\\BioEntry App\\BioEntry App\\haarcascade_frontalface_default.xml");
+            _httpClient.BaseAddress = new Uri("http://localhost:63001/api/");
             _faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
-            //_faceRecognizer = new LBPHFaceRecognizer(1, 8, 8, 8, 100);
         }
 
         private void Capture()
@@ -61,6 +84,8 @@ namespace BioEntry_App.View
 
         private void FaceRecognitionWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            Attempts = 1;
+            Status = $"Attempts: {Attempts}";
             Capture();
         }
         private void ProcessFrame(object sender, EventArgs arg)
@@ -78,7 +103,7 @@ namespace BioEntry_App.View
 
                 foreach (var face in faces)
                 {
-                    image.Draw(face, new Bgr(0, 255, 0), 2);
+                    image.Draw(face, new Bgr(0, 255, 0), 1);
                     
                     SendFaceToAPI(gray.Copy(face));
                 }
@@ -107,6 +132,8 @@ namespace BioEntry_App.View
         private async void SendFaceToAPI(Image<Gray, byte> faceImage)
         {
             Capture();
+            Status = $"Attempts: {Attempts}";
+            Attempts+=1;
             byte[] faceBytes = faceImage.ToJpegData();
 
             var data = new
@@ -117,11 +144,10 @@ namespace BioEntry_App.View
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             // Check Method For Recognition This Settings Temorary After Compelete Admin Page This Setting will change to check automaticlly
-            string FRMethod = "WithApi"; // WithApp
+            string FRMethod = "WithApp"; // WithApp, WithApi
             if (FRMethod == "WithApi")
             {
-                _httpClient.BaseAddress = new Uri("http://localhost:63001/api/FaceRecognition/");
-                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(_httpClient.BaseAddress, content);
+                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(_httpClient.BaseAddress + "FaceRecognition", content);
                 if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
                 {
                     var Response = JsonConvert.DeserializeObject<Dictionary<object, object>>(httpResponseMessage.Content.ReadAsStringAsync().Result);
@@ -142,11 +168,29 @@ namespace BioEntry_App.View
                 {
                     Capture();
                 }
-            } else if (FRMethod == "WithApp")
+            } 
+            else if (FRMethod == "WithApp")
             {
-                _httpClient.BaseAddress = new Uri("http://localhost:63001/api/FaceRecognition/");
-                HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(_httpClient.BaseAddress);
+                HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(_httpClient.BaseAddress + "FaceRecognition");
                 var Response = JsonConvert.DeserializeObject<Dictionary<object, object>>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+                Response.TryGetValue("Faces", out var JFaces);
+                var Faces = JsonConvert.DeserializeObject<List<Face>>(JFaces.ToString());
+
+                FaceRecognition faceRecognition = new FaceRecognition();
+
+                var Result = faceRecognition.Compare(Faces, data.Img).Result;
+
+                if (Result == null)
+                {
+                    Capture();
+                }
+                else
+                {
+                    var Message = "successfully";
+                }
+
+                
+
             }
             
         }

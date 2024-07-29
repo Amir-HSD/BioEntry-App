@@ -10,8 +10,9 @@
     Title="MainWindow"
     Width="1200"
     Height="800"
+    Loaded="FaceRecognitionWindow_Loaded"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d" Loaded="FaceRecognitionWindow_Loaded">
+    mc:Ignorable="d">
     <WindowChrome.WindowChrome>
         <WindowChrome
             CaptionHeight="0"
@@ -81,6 +82,12 @@
                     Foreground="White">
                     Log in With Face ID
                 </ui:TextBlock>
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Foreground="White"
+                    Text="{Binding Status}" />
             </Grid>
         </Grid>
     </Grid>

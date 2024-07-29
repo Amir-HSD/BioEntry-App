@@ -87,7 +87,6 @@ namespace BioEntry_App.Services
                 {
                     File.Delete(Face1FileName);
                     _faceRecognizer.Dispose();
-                    
                 }
 
             }
