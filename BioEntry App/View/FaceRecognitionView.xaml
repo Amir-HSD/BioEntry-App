@@ -87,6 +87,12 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Foreground="White"
+                    Text="{Binding Attemptstxt}" />
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Foreground="White"
                     Text="{Binding Status}" />
             </Grid>
         </Grid>

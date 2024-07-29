@@ -38,6 +38,7 @@ namespace BioEntry_App.View
 
         // property
         public int Attempts { get; set; }
+
         private string status;
 
         public string Status
@@ -45,6 +46,15 @@ namespace BioEntry_App.View
             get { return status; }
             set { status = value; OnPropertyChanged(); }
         }
+
+        private string attemptstxt;
+
+        public string Attemptstxt
+        {
+            get { return attemptstxt; }
+            set { attemptstxt = value; OnPropertyChanged(); }
+        }
+
 
 
         public FaceRecognitionView()
@@ -66,10 +76,11 @@ namespace BioEntry_App.View
             else
             {
                 if (_capture == null)
-                {
+                { 
                     _capture = new VideoCapture();
                     _capture.ImageGrabbed += ProcessFrame;
                 }
+                Status = "Status: Searching";
                 _capture.Start();
                 _captureInProgress = true;
             }
@@ -85,7 +96,7 @@ namespace BioEntry_App.View
         private void FaceRecognitionWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Attempts = 1;
-            Status = $"Attempts: {Attempts}";
+            Attemptstxt = $"Attempts: {Attempts}";
             Capture();
         }
         private void ProcessFrame(object sender, EventArgs arg)
@@ -132,7 +143,8 @@ namespace BioEntry_App.View
         private async void SendFaceToAPI(Image<Gray, byte> faceImage)
         {
             Capture();
-            Status = $"Attempts: {Attempts}";
+            Status = "Status: Detected";
+            Attemptstxt = $"Attempts: {Attempts}";
             Attempts+=1;
             byte[] faceBytes = faceImage.ToJpegData();
 
@@ -156,10 +168,11 @@ namespace BioEntry_App.View
                     {
                         if (status.ToString().Contains("successfully"))
                         {
-
+                            Status = "Status: Successfully";
                         }
                         else
                         {
+                            Status = "Status: Failed";
                             Capture();
                         }
                     }
@@ -182,11 +195,12 @@ namespace BioEntry_App.View
 
                 if (Result == null)
                 {
+                    Status = "Status: Failed";
                     Capture();
                 }
                 else
                 {
-                    var Message = "successfully";
+                    Status = "Status: Successfully";
                 }
 
                 

@@ -46,6 +46,9 @@ namespace BioEntry_App.Services
 
                     foreach (var Face in Faces)
                     {
+                        // for optimizing
+                        await Task.Delay(250);
+
                         byte[] Face2byte = Convert.FromBase64String(Face.Img);
                         Face2FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FaceComparator") + Guid.NewGuid().ToString();
 
