@@ -77,6 +77,7 @@
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Model\Face.cs" />
+    <Compile Include="Model\Finger.cs" />
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\FaceRecognition.cs" />
     <Compile Include="ViewModel\FaceRecognitionViewModel.cs" />

@@ -8,6 +8,10 @@ using System.IO.Ports;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using System.Net.Http;
+using System.Security.Policy;
+using Newtonsoft.Json;
+using BioEntry_App.Model;
 
 namespace BioEntry_App.ViewModel
 {
@@ -16,8 +20,12 @@ namespace BioEntry_App.ViewModel
         SerialPort SerialPort;
 
         FingerprintView FingerprintView;
+
+        HttpClient _httpClient;
         public FingerPrintViewModel(FingerprintView fpv)
         {
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("http://localhost:63001/api/");
             FingerprintView = fpv;
             SerialPort = new SerialPort("COM3", 115200);
             OpenCloseSerialPort();
@@ -53,7 +61,7 @@ namespace BioEntry_App.ViewModel
             }
         }
 
-        public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        public async void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
             string data = sp.ReadLine();
@@ -62,9 +70,15 @@ namespace BioEntry_App.ViewModel
                 if (data.Contains("ID"))
                 {
                     int FingerId = Convert.ToInt32(data.Remove(0, data.IndexOf('#') + 1));
-                    MessageBox.Show("Id received: " + FingerId);
+                    HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(_httpClient.BaseAddress + $"FingerRecognition/{FingerId}");
                     SendSerialCommand("N");
-                    
+                    var finger = JsonConvert.DeserializeObject<Finger>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+                    if (finger != null)
+                    {
+                        FingerprintView.Dispatcher.Invoke(new Action(() => { FingerprintView.BiometricView.Visibility = Visibility.Visible; }));
+                        FingerprintView.Dispatcher.Invoke(new Action(() => { FingerprintView.BiometricView.ShowSuccessView(finger.UserId, finger.Name, finger.Family); }));
+                        FingerprintView.Dispatcher.Invoke(new Action(() => { FingerprintView.Close(); }));
+                    }
                 }
             }
             
