@@ -27,13 +27,21 @@ namespace BioEntry_App.ViewModel
 
         public void OpenCloseSerialPort()
         {
-            if (!SerialPort.IsOpen)
+            try
             {
-                SerialPort.Open();
+                if (!SerialPort.IsOpen)
+                {
+                    SerialPort.Open();
+                }
+                else
+                {
+                    SerialPort.Close();
+                }
             }
-            else
+            catch (Exception)
             {
-                SerialPort.Close();
+                MessageBox.Show("Cant Find Module");
+                FingerprintView.Close();
             }
         }
 

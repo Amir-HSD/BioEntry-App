@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BioEntry_App.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,49 +32,41 @@ namespace BioEntry_App.View
 
         private void FingerprintBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
-            FingerprintView fw = new FingerprintView();
-            bool? check = fw.ShowDialog();
-            if (check != null && check != true)
+            try
             {
+                this.Visibility = Visibility.Hidden;
+                FingerprintView fw = new FingerprintView(this);
+                fw.Show();
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cant Open FingerRecognition");
                 this.Visibility = Visibility.Visible;
             }
-            else
-            {
-                if(Application.Current.MainWindow.IsActive)
-                {
-                    this.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    MessageBox.Show("Error To Load MainWindow");
-                    App.Current.Shutdown();
-                }
-            }
-            
         }
 
         private void FaceRecognitionBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
-            FaceRecognitionView frw = new FaceRecognitionView();
-            bool? check = frw.ShowDialog();
-            if (check != null && check != true)
+            try
+            {
+                this.Visibility = Visibility.Hidden;
+                FaceRecognitionView frw = new FaceRecognitionView(this);
+                frw.Show();
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception)
             {
                 this.Visibility = Visibility.Visible;
+                MessageBox.Show("Cant Open FaceRecognition");
             }
-            else
-            {
-                if (Application.Current.MainWindow.IsActive)
-                {
-                    this.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    MessageBox.Show("Error To Load MainWindow");
-                    App.Current.Shutdown();
-                }
-            }
+        }
+
+        public void ShowSuccessView(int Id, string Name, string Family)
+        {
+            SuccessView successView = new SuccessView(this,Id,Name, Family);
+            this.Visibility = Visibility.Hidden;
+            successView.Show();
         }
     }
 }

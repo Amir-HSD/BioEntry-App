@@ -118,7 +118,8 @@
                     Width="250"
                     Height="50"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Click="FaceRecognitionBtn_Click">
+                    VerticalAlignment="Center"
+                    Click="FaceRecognitionBtn_Click">
                     Select
                 </ui:Button>
 

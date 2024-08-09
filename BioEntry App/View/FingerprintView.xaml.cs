@@ -22,11 +22,13 @@ namespace BioEntry_App.View
     public partial class FingerprintView : Window
     {
         FingerPrintViewModel viewModel;
-        public FingerprintView()
+        public BiometricView BiometricView;
+        public FingerprintView(BiometricView biometricView)
         {
             viewModel = new FingerPrintViewModel(this);
             this.DataContext = viewModel;
             InitializeComponent();
+            BiometricView = biometricView;
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
@@ -42,6 +44,7 @@ namespace BioEntry_App.View
         private void FingerPrintWindow_Closed(object sender, EventArgs e)
         {
             viewModel.OpenCloseSerialPort();
+            BiometricView.Visibility = Visibility.Visible;
         }
     }
 }

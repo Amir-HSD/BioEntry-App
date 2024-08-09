@@ -79,8 +79,10 @@
     <Compile Include="Model\Face.cs" />
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\FaceRecognition.cs" />
+    <Compile Include="ViewModel\FaceRecognitionViewModel.cs" />
     <Compile Include="ViewModel\FingerPrintViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\SuccessViewModel.cs" />
     <Compile Include="View\BiometricView.xaml.cs">
       <DependentUpon>BiometricView.xaml</DependentUpon>
     </Compile>
@@ -89,6 +91,9 @@
     </Compile>
     <Compile Include="View\FingerprintView.xaml.cs">
       <DependentUpon>FingerprintView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SuccessView.xaml.cs">
+      <DependentUpon>SuccessView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FingerprintView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SuccessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Windows;
+using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -15,6 +16,9 @@ using BioEntry_App.Model;
 using BioEntry_App.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using BioEntry_App.ViewModel;
 
 namespace BioEntry_App.View
 {
@@ -23,6 +27,9 @@ namespace BioEntry_App.View
     /// </summary>
     public partial class FaceRecognitionView : Window, INotifyPropertyChanged
     {
+        BiometricView BiometricView;
+
+        Face SuccessFace;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,9 +64,10 @@ namespace BioEntry_App.View
 
 
 
-        public FaceRecognitionView()
+        public FaceRecognitionView(BiometricView biometricView)
         {
             InitializeComponent();
+            BiometricView = biometricView;
             DataContext = this;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://localhost:63001/api/");
@@ -201,6 +209,12 @@ namespace BioEntry_App.View
                 else
                 {
                     Status = "Status: Successfully";
+                    HttpResponseMessage GetUserDetail = await _httpClient.GetAsync(_httpClient.BaseAddress + $"FaceRecognition/{Result.Id}");
+                    var UserDetail = JsonConvert.DeserializeObject<Face>(GetUserDetail.Content.ReadAsStringAsync().Result);
+                    _capture.Pause();
+                    _captureInProgress = false;
+                    SuccessFace = UserDetail;
+                    this.Dispatcher.Invoke(new Action(() => { this.Close(); }));
                 }
 
                 
@@ -212,5 +226,13 @@ namespace BioEntry_App.View
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
 
+        private void FaceRecognitionWindow_Closed(object sender, EventArgs e)
+        {
+            BiometricView.Visibility = Visibility.Visible;
+            if (SuccessFace != null)
+            {
+                BiometricView.ShowSuccessView(SuccessFace.Id, SuccessFace.Name, SuccessFace.Family);
+            }
+        }
     }
 }
